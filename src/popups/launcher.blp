@@ -1,0 +1,192 @@
+using Gtk 4.0;
+
+template $PopupLauncher: Gtk.Box {
+  orientation: vertical;
+
+  Gtk.Box {
+    orientation: horizontal;
+    hexpand: true;
+
+    Gtk.Box {
+      hexpand: true;
+    }
+
+    Gtk.Box {
+      orientation: vertical;
+
+      Gtk.Button {
+        name: "power-button";
+
+        child: Gtk.Image {
+          icon-name: bind template.power-off-icon;
+        };
+      }
+
+      Gtk.Button {
+        name: "restart-button";
+
+        child: Gtk.Image {
+          icon-name: bind template.restart-icon;
+        };
+      }
+
+      Gtk.Button {
+        name: "logout-button";
+
+        child: Gtk.Image {
+          icon-name: bind template.logout-icon;
+        };
+      }
+
+      Gtk.Button {
+        name: "suspend-button";
+
+        child: Gtk.Image {};
+      }
+    }
+  }
+
+  Gtk.Box {
+    orientation: horizontal;
+    hexpand: true;
+
+    Gtk.Grid {
+      Gtk.Button {
+        name: "browser-button";
+
+        layout {
+          row: 0;
+          column: 0;
+        }
+
+        child: Gtk.Image {};
+      }
+
+      Gtk.Button {
+        name: "discord-button";
+
+        layout {
+          row: 0;
+          column: 1;
+        }
+
+        child: Gtk.Image {};
+      }
+
+      Gtk.Button {
+        name: "spotify-button";
+
+        layout {
+          row: 1;
+          column: 0;
+        }
+
+        child: Gtk.Image {};
+      }
+
+      Gtk.Button {
+        name: "search-button";
+
+        layout {
+          row: 1;
+          column: 1;
+        }
+
+        child: Gtk.Image {};
+      }
+    }
+
+    Gtk.Grid {
+      hexpand: true;
+
+      Gtk.Button {
+        name: "colorpicker-button";
+
+        layout {
+          row: 0;
+          column: 0;
+        }
+
+        child: Gtk.Image {};
+      }
+
+      Gtk.Button {
+        name: "screenshot-button";
+
+        layout {
+          row: 0;
+          column: 1;
+        }
+
+        child: Gtk.Image {};
+      }
+
+      Gtk.Button {
+        name: "settings-button";
+
+        layout {
+          row: 1;
+          column: 0;
+        }
+
+        child: Gtk.Image {};
+      }
+
+      Gtk.Button {
+        name: "record-button";
+
+        layout {
+          row: 1;
+          column: 1;
+        }
+
+        child: Gtk.Image {};
+      }
+    }
+  }
+
+  Gtk.Box {
+    name: "status-buttons";
+    hexpand: true;
+
+    Gtk.Button {
+      name: "wifi-button";
+
+      child: Gtk.Image {};
+    }
+
+    Gtk.Button {
+      name: "bluetooth-button";
+
+      child: Gtk.Image {};
+    }
+
+    Gtk.Button {
+      name: "notification-button";
+
+      child: Gtk.Image {};
+    }
+
+    Gtk.Button {
+      name: "speaker-button";
+
+      child: Gtk.Image {};
+    }
+
+    Gtk.Button {
+      name: "microphone-button";
+
+      child: Gtk.Image {};
+    }
+  }
+
+  Gtk.Grid {
+    name: "folder-grid";
+    hexpand: true;
+  }
+
+  Gtk.Box {
+    name: "resources-box";
+    hexpand: true;
+  }
+}
