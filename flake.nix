@@ -32,6 +32,7 @@
         pkgs = import nixpkgs {
           inherit system;
           overlays = [fenix.overlays.default];
+          config.allowUnfree = true;
         };
         naersk-lib = pkgs.callPackage naersk {};
         customNvim = nvim.lib.${system}.makeNeovimWithLanguages {
@@ -39,9 +40,20 @@
           languages.rust.enable = true;
           languages.nix.enable = true;
         };
-        lucideIcons = pkgs.fetchzip {
-          url = "https://github.com/lucide-icons/lucide/releases/download/0.561.0/lucide-icons-0.561.0.zip";
-          sha256 = "sha256-ReN9IKZMBuSlkKTsG6JEYPQi5ctirXv54t+Q5h5PaX4=";
+        lucideIcons = pkgs.stdenv.mkDerivation {
+          name = "lucide-icons-gtk";
+
+          src = pkgs.fetchzip {
+            url = "https://github.com/lucide-icons/lucide/releases/download/0.561.0/lucide-icons-0.561.0.zip";
+            sha256 = "sha256-ReN9IKZMBuSlkKTsG6JEYPQi5ctirXv54t+Q5h5PaX4=";
+          };
+
+          installPhase = ''
+            mkdir -p $out
+            cp -r * $out/
+
+            find $out -name "*.svg" -type f -exec sed -i 's/<path /<path class="foreground-stroke transparent-fill" /g' {} +
+          '';
         };
         simpleIcons = pkgs.fetchFromGitHub {
           owner = "simple-icons";
@@ -53,7 +65,31 @@
         defaultPackage = naersk-lib.buildPackage ./.;
         devShell = with pkgs;
           mkShell {
-            buildInputs = [astal.io astal.tray astal.mpris astal.cava astal.wireplumber astal.network astal.bluetooth gtk4 astal.astal4 gtk4-layer-shell json-glib networkmanager adwaita-icon-theme graphene];
+            buildInputs = [
+              astal.apps
+              astal.io
+              astal.tray
+              astal.mpris
+              astal.cava
+              astal.wireplumber
+              astal.network
+              astal.bluetooth
+              gtk4
+              astal.astal4
+              gtk4-layer-shell
+              json-glib
+              networkmanager
+              graphene
+              glib-networking
+              gvfs
+              libglycin
+              glycin-loaders
+              lcms
+              bubblewrap
+              cacert
+              gnutls
+              gsettings-desktop-schemas
+            ];
             nativeBuildInputs = [
               (pkgs.fenix.complete.withComponents [
                 "cargo"
@@ -67,10 +103,17 @@
               pre-commit
               ags
               blueprint-compiler
+              glib-testing
             ];
+            shellHook = ''
+              export XDG_DATA_DIRS="${glycin-loaders}/share:${glib-networking}/share:${gvfs}/share:$XDG_DATA_DIRS"
+              export GIO_EXTRA_MODULES="${glib-networking}/lib/gio/modules:${gvfs}/lib/gio/modules:$GIO_EXTRA_MODULES"
+            '';
+
             RUST_SRC_PATH = rustPlatform.rustLibSrc;
 
             LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [
+              astal.apps
               astal.io
               astal.tray
               astal.mpris
@@ -85,10 +128,19 @@
               json-glib
               networkmanager
               graphene
+              libglycin
+              glycin-loaders
+              lcms
+              fontconfig
+              libseccomp
+              glib-networking
+              gvfs
+              gnutls
+              gsettings-desktop-schemas
             ];
 
             LUCIDE_ICONS_PATH = "${lucideIcons}";
-            SIMPLE_ICONS_PATH = "${simpleIcons}";
+            SIMPLE_ICONS_PATH = "${simpleIcons}/icons";
           };
       }
     );

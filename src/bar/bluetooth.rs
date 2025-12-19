@@ -1,10 +1,11 @@
 use astal_bluetooth::Bluetooth as Bt;
-use astal_bluetooth::prelude::BluetoothExt;
+use astal_bluetooth::prelude::{BluetoothExt, DeviceExt};
 use glib::clone;
 use gtk4::prelude::*;
 use gtk4::{ClosureExpression, PropertyExpression, glib};
 
 use crate::icons;
+use crate::popups::bluetooth::BluetoothPopup;
 
 pub struct Bluetooth {
 	widget: gtk4::Button,
@@ -20,7 +21,7 @@ impl Bluetooth {
 			.build();
 
 		let icon = gtk4::Image::from_icon_name(icons::Icon::BluetoothOff.name());
-		let default_label = format!("{}", bt.devices().len());
+		let default_label = format!("{}", bt.devices().into_iter().filter(|d| d.is_connected()).count());
 		let label = gtk4::Label::builder().label(default_label).build();
 
 		button_box.append(&icon);
@@ -38,7 +39,6 @@ impl Bluetooth {
 			&[&is_powered_expr, &is_connected_expr],
 			glib::closure!(
 				|_: Option<glib::Object>, is_powered: bool, is_connected: bool| -> glib::GString {
-					dbg!(is_powered, is_connected);
 					if is_connected {
 						// TODO get proper connected icon
 						icons::Icon::Bluetooth.name().into()
@@ -56,10 +56,20 @@ impl Bluetooth {
 			#[weak]
 			label,
 			move |bt| {
-				let devices = bt.devices();
-				let string = format!("{}", devices.len());
+				let string = format!("{}", bt.devices().into_iter().filter(|d| d.is_connected()).count());
 
 				label.set_label(&string);
+			}
+		));
+
+		let popup = BluetoothPopup::new();
+		popup.set_parent(&button);
+
+		button.connect_clicked(clone!(
+			#[weak]
+			popup,
+			move |_| {
+				popup.popup();
 			}
 		));
 

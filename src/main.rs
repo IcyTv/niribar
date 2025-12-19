@@ -14,9 +14,6 @@ pub struct Args {
 
 	#[clap(long)]
 	launcher: bool,
-
-	#[clap(long)]
-	no_bar: bool,
 }
 
 fn main() {
@@ -29,8 +26,10 @@ fn main() {
 	gtk4::Window::set_interactive_debugging(args.inspect);
 
 	app.connect_startup(|_| {
+		println!("=== STARTUP CALLED ===");
 		load_css();
 		icons::register_bundled_icons();
+		gtk4::gio::resources_register_include!("assets.gresource").expect("Failed to load assets");
 	});
 	app.connect_activate(build_ui(args.clone()));
 
@@ -44,25 +43,17 @@ fn load_css() {
 	gtk4::style_context_add_provider_for_display(
 		&Display::default().unwrap(),
 		&provider,
-		gtk4::STYLE_PROVIDER_PRIORITY_APPLICATION,
+		gtk4::STYLE_PROVIDER_PRIORITY_USER,
 	);
 }
 
 fn build_ui(args: Args) -> impl Fn(&gtk4::Application) {
 	move |app| {
-		if !args.no_bar {
-			let display = Display::default().expect("Could not get a display");
-			let bars = bar::Bar::for_all_monitors(&display);
-			for bar in bars {
-				app.add_window(&bar.window);
-				bar.window.present();
-			}
-		}
-
-		if args.launcher {
-			let launcher = popups::launcher::PopupLauncher::new();
-			app.add_window(&launcher.window);
-			launcher.window.present();
+		let display = Display::default().expect("Could not get a display");
+		let bars = bar::Bar::for_all_monitors(&display, &args);
+		for bar in bars {
+			app.add_window(&bar.window);
+			bar.window.present();
 		}
 	}
 }

@@ -1,0 +1,114 @@
+using Gtk 4.0;
+using Astal 4.0;
+
+template $MediaPlayerPopup: Gtk.Popover {
+  autohide: true;
+  has_arrow: false;
+  position: top;
+  width-request: 400;
+
+  child: Gtk.Overlay overlay {
+    child: Gtk.Picture {
+      content-fit: cover;
+      paintable: bind template.cover-image;
+    };
+
+    [overlay]
+    Gtk.Box content_box {
+      orientation: vertical;
+
+      styles [
+        "media-player-popup",
+      ]
+
+      Gtk.Label {
+        label: bind template.title-text;
+        max-width-chars: 20;
+        ellipsize: middle;
+
+        styles [
+          "media-player-title",
+        ]
+      }
+
+      Gtk.Label {
+        label: bind template.album-text;
+        max-width-chars: 20;
+        ellipsize: middle;
+
+        styles [
+          "media-player-album",
+        ]
+      }
+
+      Gtk.Label {
+        label: bind template.artist-text;
+        max-width-chars: 20;
+        ellipsize: end;
+
+        styles [
+          "media-player-artist",
+        ]
+      }
+
+      Gtk.Box {
+        spacing: 12;
+
+        styles [
+          "media-player-controls",
+        ]
+
+        Gtk.ToggleButton {
+          hexpand: true;
+          icon-name: bind template.shuffle-icon;
+          active: bind template.is-shuffle-active bidirectional;
+          sensitive: bind template.shuffle-supported;
+
+          styles [
+            "media-player-shuffle",
+          ]
+        }
+
+        Gtk.Button {
+          hexpand: true;
+          icon-name: bind template.back-icon;
+          clicked => $on_previous_track() swapped;
+        }
+
+        Gtk.Button {
+          hexpand: true;
+          icon-name: bind template.play-icon;
+          clicked => $on_play_pause() swapped;
+        }
+
+        Gtk.Button {
+          hexpand: true;
+          icon-name: bind template.forward-icon;
+          clicked => $on_next_track() swapped;
+        }
+
+        Gtk.ToggleButton {
+          hexpand: true;
+          icon-name: bind template.repeat-icon;
+          active: bind template.is-repeat-active bidirectional;
+          sensitive: bind template.loop-supported;
+
+          styles [
+            "media-player-repeat",
+          ]
+        }
+      }
+
+      Astal.Slider {
+        min: 0;
+        max: bind template.playback-duration;
+        value: bind template.playback-progress bidirectional;
+        step: 1;
+
+        styles [
+          "media-player-seekbar",
+        ]
+      }
+    }
+  };
+}

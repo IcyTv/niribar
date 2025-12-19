@@ -1,0 +1,27 @@
+using Gtk 4.0;
+
+template $BluetoothPopup: Gtk.Popover {
+  autohide: true;
+  has_arrow: false;
+  position: bottom;
+
+  child: Gtk.Box {
+    orientation: vertical;
+
+    Gtk.Label {
+      label: "Bluetooth";
+
+      styles [
+        "bluetooth-header",
+      ]
+    }
+
+    Gtk.ListView list_view {
+      orientation: vertical;
+
+      styles [
+        "bluetooth-devices",
+      ]
+    }
+  };
+}

@@ -20,8 +20,8 @@ pub struct Bar {
 }
 
 impl Bar {
-	pub fn new(monitor_index: i32, monitor_width: i32) -> Self {
-		let overview = overview::Overview::new();
+	pub fn new(monitor_index: i32, monitor_width: i32, args: &super::Args) -> Self {
+		let overview = overview::Overview::new(args);
 		let taskbar = taskbar::Taskbar::new(monitor_index);
 		let start_child = gtk4::Box::builder()
 			.hexpand(true)
@@ -57,7 +57,7 @@ impl Bar {
 			.start_widget(&start_child)
 			.center_widget(&mediaplayer)
 			.end_widget(&end_box)
-			.css_classes(["bar-center"])
+			.css_classes(["bar"])
 			.build();
 
 		let window = astal4::Window::builder()
@@ -79,7 +79,7 @@ impl Bar {
 		}
 	}
 
-	pub fn for_all_monitors(display: &gtk4::gdk::Display) -> Vec<Self> {
+	pub fn for_all_monitors(display: &gtk4::gdk::Display, args: &super::Args) -> Vec<Self> {
 		display
 			.monitors()
 			.iter::<gdk::Monitor>()
@@ -87,7 +87,7 @@ impl Bar {
 			.enumerate()
 			.map(|(idx, monitor)| {
 				let width = monitor.geometry().width();
-				Bar::new(idx as i32, width)
+				Bar::new(idx as i32, width, args)
 			})
 			.collect()
 	}

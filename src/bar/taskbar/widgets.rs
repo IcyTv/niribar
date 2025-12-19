@@ -7,7 +7,7 @@ use gtk4::prelude::*;
 use gtk4::subclass::prelude::*;
 use niri_ipc::Window as NiriWindow;
 
-use crate::icons;
+use crate::icons::{self, Icon};
 
 glib::wrapper! {
 	pub struct NiriWindowWidget(ObjectSubclass<niri_window_imp::NiriWindowWidget>)

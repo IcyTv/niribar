@@ -1,0 +1,84 @@
+using Gtk 4.0;
+
+template $LauncherPopup: Gtk.Popover {
+  autohide: true;
+  has_arrow: false;
+  position: top;
+
+  child: Gtk.Box {
+    orientation: vertical;
+    spacing: 12;
+
+    Gtk.Box {
+      orientation: horizontal;
+      hexpand: true;
+
+      Gtk.Box gif_box {
+        hexpand: true;
+        halign: fill;
+        valign: start;
+      }
+
+      Gtk.Box power_icons {
+        orientation: vertical;
+        spacing: 6;
+        vexpand: true;
+        margin-start: 12;
+      }
+    }
+
+    Gtk.Box {
+      orientation: horizontal;
+      hexpand: true;
+      spacing: 16;
+
+      Gtk.Grid quick_apps_grid {
+        hexpand: true;
+
+        styles [
+          "quick-apps-grid",
+          "button-grid",
+        ]
+
+        column-spacing: 8;
+        row-spacing: 8;
+      }
+
+      Gtk.Grid tool_grid {
+        hexpand: true;
+
+        styles [
+          "tool-grid",
+          "button-grid",
+        ]
+
+        column-spacing: 8;
+        row-spacing: 8;
+      }
+    }
+
+    Gtk.Box status_buttons {
+      name: "status-buttons";
+      hexpand: true;
+      spacing: 6;
+
+      styles [
+        "status-buttons",
+      ]
+    }
+
+    Gtk.Grid folder_grid {
+      name: "folder-grid";
+      hexpand: true;
+
+      styles [
+        "folder-grid",
+      ]
+    }
+
+    Gtk.Box {
+      name: "resources-box";
+      hexpand: true;
+    }
+  };
+}

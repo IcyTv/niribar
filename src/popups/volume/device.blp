@@ -1,0 +1,18 @@
+using Gtk 4.0;
+using AstalWp 0.1;
+
+template $DeviceWidget: Gtk.ToggleButton {
+  child: Gtk.Box {
+    Gtk.Image {
+      icon-name: bind ($to_icon((template.endpoint as <AstalWp.Endpoint>).route.direction) as <string>);
+    }
+
+    Gtk.Label {
+      width-chars: 20;
+      max-width-chars: 20;
+      ellipsize: middle;
+      hexpand: true;
+      label: bind (template.endpoint as <AstalWp.Endpoint>).description;
+    }
+  };
+}

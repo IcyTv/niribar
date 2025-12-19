@@ -1,0 +1,138 @@
+using Gtk 4.0;
+using Astal 4.0;
+using AstalWp 0.1;
+
+template $VolumePopup: Gtk.Popover {
+  autohide: true;
+  has_arrow: false;
+  position: top;
+
+  child: Gtk.Box {
+    orientation: vertical;
+
+    styles [
+      "wireplumber",
+    ]
+
+    Gtk.Box {
+      orientation: vertical;
+
+      styles [
+        "volume-box",
+      ]
+
+      Gtk.Label {
+        label: "Volume";
+        halign: start;
+
+        styles [
+          "volume-label",
+        ]
+      }
+
+      Gtk.Box {
+        orientation: horizontal;
+        spacing: 10;
+
+        styles [
+          "speaker-volume-controls",
+        ]
+
+        Gtk.ToggleButton {
+          icon-name: bind template.speaker-icon;
+          active: bind (template.default-speaker as <AstalWp.Endpoint>).mute;
+
+          styles [
+            "speaker-mute",
+          ]
+
+          clicked => $on_toggle_speaker_mute() swapped;
+        }
+
+        Gtk.Box {
+          orientation: vertical;
+
+          Gtk.Label {
+            width-chars: 20;
+            max-width-chars: 20;
+            ellipsize: middle;
+            label: bind (template.default-speaker as <AstalWp.Endpoint>).name;
+
+            styles [
+              "speaker-name",
+            ]
+          }
+
+          Astal.Slider {
+            hexpand: true;
+            min: 0;
+            max: 100;
+            value: bind template.speaker-volume-percentage bidirectional;
+            step: 1;
+          }
+        }
+
+        Gtk.Label {
+          label: bind ($format_percentage(template.speaker-volume-percentage)) as <string>;
+          width-chars: 4;
+        }
+      }
+
+      Gtk.Box {
+        orientation: horizontal;
+        spacing: 10;
+
+        styles [
+          "mic-volume-controls",
+        ]
+
+        Gtk.ToggleButton {
+          icon-name: bind template.mic-icon;
+          active: bind (template.default-mic as <AstalWp.Endpoint>).mute;
+
+          styles [
+            "mic-mute",
+          ]
+
+          clicked => $on_toggle_mic_mute() swapped;
+        }
+
+        Gtk.Box {
+          orientation: vertical;
+
+          Gtk.Label {
+            width-chars: 20;
+            max-width-chars: 20;
+            ellipsize: middle;
+            label: bind (template.default-mic as <AstalWp.Endpoint>).description;
+
+            styles [
+              "mic-name",
+            ]
+          }
+
+          Astal.Slider {
+            hexpand: true;
+            min: 0;
+            max: 100;
+            value: bind template.mic-volume-percentage bidirectional;
+            step: 1;
+          }
+        }
+
+        Gtk.Label {
+          label: bind ($format_percentage(template.mic-volume-percentage)) as <string>;
+          width-chars: 4;
+        }
+      }
+    }
+
+    Gtk.ListView devices_list_view {
+      orientation: vertical;
+
+      styles [
+        "audio-devices-list",
+      ]
+    }
+  };
+}

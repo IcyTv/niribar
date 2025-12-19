@@ -1,0 +1,21 @@
+using Gtk 4.0;
+using AstalBluetooth 0.1;
+
+template $BluetoothDevice: Gtk.Button {
+  styles [
+    "bluetooth-device",
+  ]
+
+  child: Gtk.Box {
+    orientation: horizontal;
+    spacing: 6;
+
+    Gtk.Image {
+      icon-name: bind $to_icon((template.device as <AstalBluetooth.Device>).icon) as <string>;
+    }
+
+    Gtk.Label {
+      label: bind (template.device as <AstalBluetooth.Device>).alias;
+    }
+  };
+}

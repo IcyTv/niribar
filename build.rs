@@ -24,9 +24,30 @@ const LUCIDE_ICONS: &[&str] = &[
 	"volume-2",
 	"volume-x",
 	"volume-off",
+	"search",
+	"pipette",
+	"settings",
+	"camera",
+	"circle",
+	"bell",
+	"mic",
+	"mic-off",
+	"folder",
+	"folder-down",
+	"folder-code",
+	"briefcase-business",
+	"terminal",
+	"shuffle",
+	"skip-back",
+	"play",
+	"pause",
+	"skip-forward",
+	"repeat",
+	"headphones",
+	"headset",
 ];
 
-const BRAND_ICONS: &[&str] = &["discord", "spotify", "firefox"];
+const BRAND_ICONS: &[&str] = &["discord", "spotify", "firefox", "nixos"];
 
 fn main() {
 	println!("cargo:rerun-if-env-changed=LUCIDE_ICONS_PATH");
@@ -79,7 +100,6 @@ fn main() {
 	let simple_icons_path = std::env::var("SIMPLE_ICONS_PATH").expect(
 		"SIMPLE_ICONS_PATH environment variable not set. Please set it to the path of the simple-icons repository.",
 	);
-	let simple_icons_path = format!("{}/icons", simple_icons_path);
 	for icon_name in BRAND_ICONS {
 		process_icon(icon_name, &simple_icons_path);
 	}
@@ -100,4 +120,6 @@ fn main() {
 	std::fs::write(dest_path.join("icons.rs"), code).unwrap();
 
 	println!("cargo:rerun-if-changed=**/*.blp");
+
+	glib_build_tools::compile_resources(&[".", "./assets/"], "assets/resources.xml", "assets.gresource");
 }

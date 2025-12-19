@@ -1,0 +1,59 @@
+using Gtk 4.0;
+
+template $SingleMediaPlayerWidget: Gtk.Box {
+  orientation: horizontal;
+  spacing: 6;
+
+  styles [
+    "media-player-widget",
+  ]
+
+  Gtk.Button {
+    styles [
+      "player-switch-button",
+    ]
+
+    clicked => $on_player_switch_clicked() swapped;
+
+    child: Gtk.Stack switcher_button_stack {
+      name: "switcher-button-stack";
+      visible-child-name: bind template.button-state;
+      hhomogeneous: true;
+      vhomogeneous: true;
+
+      Gtk.StackPage {
+        name: "player-icon";
+
+        child: Gtk.Image player-icon {
+          icon-name: bind template.player-icon;
+          pixel-size: 24;
+          name: "player-icon";
+        };
+      }
+
+      Gtk.StackPage {
+        name: "switcher-icon";
+
+        child: Gtk.Image switcher-icon {
+          icon-name: bind template.switcher-icon-name;
+          pixel-size: 24;
+          name: "switcher-icon";
+        };
+      }
+    };
+  }
+
+  Gtk.ToggleButton player_button {
+    styles [
+      "player-button",
+    ]
+
+    clicked => $on_title_button_clicked() swapped;
+
+    child: Gtk.Label title_label {
+      label: bind template.playing-title;
+      max-width-chars: 40;
+      ellipsize: middle;
+    };
+  }
+}

@@ -7,6 +7,7 @@ use glib::object::ObjectExt;
 use gtk4::prelude::*;
 
 use crate::icons;
+use crate::popups::volume::VolumePopup;
 
 pub struct Volume {
 	widget: gtk4::Button,
@@ -35,6 +36,17 @@ impl Volume {
 
 		let current_binding = Rc::new(RefCell::new(None::<glib::Binding>));
 		let current_icon_binding = Rc::new(RefCell::new(None::<glib::Binding>));
+
+		let popup = VolumePopup::new();
+		popup.set_parent(&widget);
+
+		widget.connect_clicked(clone!(
+			#[weak]
+			popup,
+			move |_| {
+				popup.popup();
+			}
+		));
 
 		let changed_default_speaker = clone!(
 			#[strong]

@@ -1,0 +1,31 @@
+using Gtk 4.0;
+
+template $ClockPopup: Gtk.Popover {
+  autohide: true;
+  has_arrow: false;
+  position: bottom;
+
+  child: Gtk.Box {
+    orientation: vertical;
+
+    Gtk.Label {
+      label: bind template.current-time;
+
+      styles [
+        "clock-time-label",
+      ]
+    }
+
+    Gtk.Box {
+      styles [
+        "calendar-box",
+      ]
+    }
+
+    Gtk.Box {
+      styles [
+        "weather-box",
+      ]
+    }
+  };
+}

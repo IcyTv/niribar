@@ -1,0 +1,20 @@
+using Gtk 4.0;
+
+template $FolderButton: Gtk.Button {
+  styles [
+    "folder-button",
+  ]
+
+  child: Gtk.Box {
+    orientation: horizontal;
+    spacing: 6;
+
+    Gtk.Image {
+      icon-name: bind template.icon-name;
+    }
+
+    Gtk.Label {
+      label: bind template.label;
+    }
+  };
+}

@@ -15,9 +15,10 @@
 	color: alpha(@window_fg_color, 0.7);
 }
 
-.player-button.playing {
+.player-button:checked {
 	color: @window_fg_color;
 }
+
 
 .taskbar {
 	background-color: @window_bg_color;
@@ -29,11 +30,292 @@
 }
 
 .niri-window {
-	min-width: 32px;
-	min-height: 32px;
+	min-width: 24px;
+	min-height: 24px;
 	
 }
 
 .niri-window.focused {
 	background-color: @accent_color;
+}
+
+.folder-button {
+	padding: 8px;
+	margin: 10px;
+}
+
+.bar .volume {
+	background-color: @card_bg_color;
+	color: @red_1;
+	padding: 0px 6px;	
+	border-radius: 6px;
+}
+
+popover {
+	background-color: transparent;
+}
+
+popover > contents {
+	background-color: @window_bg_color;
+	border-radius: 12px;
+	border: 1px solid @window_fg_color;
+}
+
+.launcher-gif {
+	border-radius: 12px;
+	margin-top: -12px;
+	margin-left: -12px;
+}
+
+.power-button {
+	background-color: @destructive_bg_color;
+	color: @destructive_fg_color;
+}
+.restart-button {
+	background-color: @orange_1;
+	color: @warning_fg_color;
+}
+.logout-button {
+	background-color: @success_bg_color;
+	color: @success_fg_color;
+}
+.suspend-button {
+	background-color: @accent_bg_color;
+	color: @accent_fg_color;
+}
+.button-grid {
+	background-color: @card_bg_color;
+	border-radius: 8px;
+	padding: 12px;
+}
+.button-grid button {
+	background-color: shade(@accent_bg_color, 1.15);
+	color: @accent_fg_color;
+}
+.wifi-button {
+	background-color: @warning_bg_color;
+	color: @warning_fg_color;
+}
+.bluetooth-button {
+	background-color: @accent_bg_color;
+	color: @accent_fg_color;
+}
+.notifications-bton {
+	background-color: @yellow_1;
+	color: @warning_fg_color;
+}
+.speaker-button {
+	background-color: @destructive_bg_color;
+	color: @destructive_fg_color;
+}
+.microphone-button {
+	background-color: @success_bg_color;
+	color: @success_fg_color;
+}
+.status-buttons > button:hover,
+.button-grid button:hover {
+	filter: brightness(0.8);
+}
+.status-buttons > button:active,
+.button-grid button:active {
+	filter: brightness(0.5);
+}
+
+.folder-grid > button {
+	background-color: transparent;
+}
+.folder-grid > button:active {
+	background-color: shade(@card_bg_color, 1.2);
+}
+
+.folder-grid > button:nth-child(1) {
+	color: @purple_1;
+}
+.folder-grid > button:nth-child(2) {
+	color: @green_1;
+}
+.folder-grid > button:nth-child(3) {
+	color: @yellow_1;
+}
+.folder-grid > button:nth-child(4) {
+	color: @purple_1;
+}
+.folder-grid > button:nth-child(5) {
+	color: @red_1;
+}
+.folder-grid > button:nth-child(6) {
+	color: @blue_1;
+}
+
+.media-player-shuffle:checked {
+	background-color: @success_bg_color;
+	color: @success_fg_color;
+}
+.media-player-repeat:checked {
+	background-color: @accent_bg_color;
+	color: @accent_fg_color;
+}
+
+.media-player-title {
+	color: @window_fg_color;
+	font-size: 1rem;
+	font-weight: bold;
+
+	margin-top: 8px;
+	margin-bottom: 6px;
+}
+.media-player-album {
+	color: @green_1;
+
+	margin-bottom: 4px;
+	font-size: 0.75rem;
+}
+.media-player-artist {
+	color: @yellow_1;
+
+	margin-bottom: 8px;
+	font-size: 0.75rem;
+}
+
+.media-player-controls {
+	margin-top: 12px;
+}
+
+scale.media-player-seekbar {
+	margin-top: 12px;
+}
+scale.media-player-seekbar > trough {
+}
+.media-player-seekbar highlight {
+	background-color: @yellow_1;
+	color: @yellow_1;
+	min-height: 16px;
+} 
+.media-player-seekbar slider {
+	background-color: @accent_color;
+	min-height: 18px;
+}
+
+.wireplumber {
+	background-color: @window_bg_color;
+}
+
+.wireplumber .volume-box {
+	border-radius: 12px;
+	padding: 12px;
+	background-color: @card_bg_color;
+}
+
+.wireplumber .volume-label {
+	color: @red_1;
+	font-size: 1.25rem;
+	font-weight: bold;
+}
+
+.wireplumber .speaker-mute,
+.wireplumber .mic-mute {
+	background-color: transparent;
+}
+
+.wireplumber .speaker-mute image,
+.wireplumber .mic-mute image {
+	color: @red_1;
+}
+
+.wireplumber .speaker-name,
+.wireplumber .mic-name {
+	font-size: 0.9rem;
+	font-weight: bold;
+}
+
+.wireplumber .speaker-volume-controls scale,
+.wireplumber .mic-volume-controls scale {}
+
+.wireplumber .speaker-volume-controls slider,
+.wireplumber .mic-volume-controls slider {
+	min-height: 8px;
+	background-color: transparent;
+	box-shadow: none;
+	margin: 0;
+	padding: 0;
+}
+
+.wireplumber .speaker-volume-controls highlight,
+.wireplumber .mic-volume-controls highlight {
+	background-color: @red_1;
+	color: @red_1;
+	min-height: 8px;
+}
+
+.wireplumber .playback-devices-box {
+	padding: 12px;
+	border-radius: 12px;
+	background-color: @card_bg_color;
+
+	margin-top: 12px;
+}
+.wireplumber .playback-devices-label {
+	color: @red_1;
+	font-size: 1.25rem;
+	font-weight: bold;
+}
+.wireplumber .playback-devices-box button {
+	background-color: transparent;
+
+	font-size: 0.9rem;
+	font-weight: bold;
+}
+.wireplumber .playback-devices-box button:checked {
+	background-color: lighter(@card_bg_color);
+}
+.wireplumber .playback-devices-box image {
+	color: @red_1;
+	margin-right: 8px;
+}
+
+.wireplumber .input-devices-box {
+	padding: 12px;
+	border-radius: 12px;
+	background-color: @card_bg_color;
+
+	margin-top: 12px;
+}
+.wireplumber .input-devices-label {
+	color: @red_1;
+	font-size: 1.25rem;
+	font-weight: bold;
+}
+.wireplumber .input-devices-box button {
+	background-color: transparent;
+	font-size: 0.9rem;
+	font-weight: bold;
+}
+.wireplumber .input-devices-box button:checked {
+	background-color: lighter(@card_bg_color);
+}
+.wireplumber .input-devices-box image {
+	color: @red_1;
+	margin-right: 8px;
+}
+
+.bluetooth-device {
+	color: @window_fg_color;
+	background-color: transparent;
+}
+
+.bluetooth-device.connected {
+	color: @blue_1;
+}
+
+.bluetooth-device.connecting {
+	animation: bluetooth-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes bluetooth-pulse {
+	0%, 100% {
+		color: @window_fg_color;
+	}
+	50% {
+		color: @red_1;
+	}
 }
