@@ -2,18 +2,20 @@ use astal_io::Time;
 use astal_io::prelude::TimeExt;
 use gtk4::glib::object::Cast;
 use gtk4::glib::{DateTime, SignalHandlerId, clone};
-use gtk4::prelude::BoxExt;
+use gtk4::prelude::*;
 
 use crate::icons;
+use crate::popups::clock::ClockPopup;
 
 pub struct Clock {
-	container:      gtk4::Box,
-	timer:          Time,
+	container: gtk4::Widget,
+	timer: Time,
 	signal_handler: Option<SignalHandlerId>,
 }
 
 impl Clock {
 	pub fn new() -> Self {
+		let button = gtk4::Button::builder().name("clock").css_classes(["clock"]).build();
 		let container = gtk4::Box::builder()
 			.name("clock")
 			.spacing(6)
@@ -28,44 +30,38 @@ impl Clock {
 		container.append(&date_label);
 		container.append(&clock_icon);
 		container.append(&time_label);
+
+		button.set_child(Some(&container));
+
 		let timer = Time::interval(1000, None);
+
+		let popup = ClockPopup::new(&timer);
+		popup.set_parent(&button);
+
+		button.connect_clicked(glib::clone!(
+			#[weak]
+			popup,
+			move |_| {
+				popup.popup();
+			}
+		));
 
 		let handler = timer.connect_now(clone!(
 			#[weak]
 			date_label,
 			move |_| {
-				let time = match DateTime::now_local() {
-					Ok(time) => time,
-					Err(e) => {
-						eprintln!("Error {e}");
-						return;
-					}
-				};
-
-				let date = match time.format("%a %b %d") {
-					Ok(time) => time,
-					Err(e) => {
-						eprintln!("Error {e}");
-						return;
-					}
-				};
+				let Ok(time) = DateTime::now_local() else { return };
+				let Ok(date) = time.format("%a %b %d") else { return };
 
 				date_label.set_markup(&date);
 
-				let time = match time.format("%X") {
-					Ok(time) => time,
-					Err(e) => {
-						eprintln!("Error {e}");
-						return;
-					}
-				};
-
+				let Ok(time) = time.format("%T") else { return };
 				time_label.set_markup(&time);
 			}
 		));
 
 		Self {
-			container,
+			container: button.upcast(),
 			timer,
 			signal_handler: Some(handler),
 		}

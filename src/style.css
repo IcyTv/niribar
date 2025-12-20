@@ -308,7 +308,7 @@ scale.media-player-seekbar > trough {
 }
 
 .bluetooth-device.connecting {
-	animation: bluetooth-pulse 1.5s ease-in-out infinite;
+	animation: bluetooth-pulse 1s ease-in-out infinite;
 }
 
 @keyframes bluetooth-pulse {
@@ -318,4 +318,18 @@ scale.media-player-seekbar > trough {
 	50% {
 		color: @red_1;
 	}
+}
+
+.clock-item {
+	border-radius: 12px;
+	background-color: @card_bg_color;
+	margin: 8px;
+}
+
+.clock-time-label {
+	font-size: 3rem;
+	font-weight: bold;
+	color: @purple_1;
+	
+	padding: 20px;
 }
