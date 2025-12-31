@@ -83,6 +83,7 @@
               glib-networking
               gvfs
               libglycin
+              libgweather
               glycin-loaders
               lcms
               bubblewrap
@@ -104,9 +105,11 @@
               ags
               blueprint-compiler
               glib-testing
+              glib
+              wrapGAppsHook4
             ];
             shellHook = ''
-              export XDG_DATA_DIRS="${glycin-loaders}/share:${glib-networking}/share:${gvfs}/share:$XDG_DATA_DIRS"
+              export XDG_DATA_DIRS="${gsettings-desktop-schemas}/share:${glycin-loaders}/share:${glib-networking}/share:${gvfs}/share:${libgweather}/share:${libgweather}/share/gsettings-schemas/${libgweather.name}:$XDG_DATA_DIRS"
               export GIO_EXTRA_MODULES="${glib-networking}/lib/gio/modules:${gvfs}/lib/gio/modules:$GIO_EXTRA_MODULES"
             '';
 
@@ -137,6 +140,7 @@
               gvfs
               gnutls
               gsettings-desktop-schemas
+              libgweather
             ];
 
             LUCIDE_ICONS_PATH = "${lucideIcons}";

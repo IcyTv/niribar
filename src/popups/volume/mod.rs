@@ -36,16 +36,16 @@ mod imp {
 	#[properties(wrapper_type = super::VolumePopup)]
 	pub struct VolumePopup {
 		#[property(get, set)]
-		speaker_icon: RefCell<String>,
+		speaker_icon:              RefCell<String>,
 		#[property(get, set)]
-		default_speaker: RefCell<Option<Endpoint>>,
+		default_speaker:           RefCell<Option<Endpoint>>,
 		#[property(get, set)]
 		speaker_volume_percentage: RefCell<u8>,
 
 		#[property(get, set)]
-		mic_icon: RefCell<String>,
+		mic_icon:              RefCell<String>,
 		#[property(get, set)]
-		default_mic: RefCell<Option<Endpoint>>,
+		default_mic:           RefCell<Option<Endpoint>>,
 		#[property(get, set)]
 		mic_volume_percentage: RefCell<u8>,
 
@@ -149,7 +149,7 @@ mod imp {
 						// Filter for audio sink (speakers) and source (microphones) nodes only
 						if matches!(media_class, MediaClass::AudioSink | MediaClass::AudioSource) {
 							// Node IS an Endpoint, just downcast
-							if let Some(endpoint) = node.clone().downcast::<Endpoint>().ok() {
+							if let Ok(endpoint) = node.clone().downcast::<Endpoint>() {
 								let widget = DeviceWidget::new(&endpoint);
 								store.append(&widget);
 							}
@@ -193,7 +193,7 @@ mod imp {
 			let factory = gtk4::SignalListItemFactory::new();
 
 			factory.connect_setup(|_, item| {
-				let item = item.downcast_ref::<gtk4::ListItem>().unwrap();
+				let _item = item.downcast_ref::<gtk4::ListItem>().unwrap();
 				// We'll set the actual DeviceWidget in bind
 			});
 
@@ -225,18 +225,18 @@ mod imp {
 				let header = item.downcast_ref::<gtk4::ListHeader>().unwrap();
 				let label = header.child().and_downcast::<gtk4::Label>().unwrap();
 
-				if let Some(device_widget) = header.item().and_downcast::<DeviceWidget>() {
-					if let Some(endpoint) = device_widget.endpoint() {
-						let media_class = endpoint.media_class();
-						let header_text = if media_class == MediaClass::AudioSink {
-							label.add_css_class("playback-devices-label");
-							"Playback Devices"
-						} else {
-							label.add_css_class("input-devices-label");
-							"Input Devices"
-						};
-						label.set_text(header_text);
-					}
+				if let Some(device_widget) = header.item().and_downcast::<DeviceWidget>()
+					&& let Some(endpoint) = device_widget.endpoint()
+				{
+					let media_class = endpoint.media_class();
+					let header_text = if media_class == MediaClass::AudioSink {
+						label.add_css_class("playback-devices-label");
+						"Playback Devices"
+					} else {
+						label.add_css_class("input-devices-label");
+						"Input Devices"
+					};
+					label.set_text(header_text);
 				}
 			});
 
@@ -305,7 +305,7 @@ mod imp {
 				}
 			);
 
-			bind_default_speaker_volume(&audio);
+			bind_default_speaker_volume(audio);
 			audio.connect_default_speaker_notify(bind_default_speaker_volume);
 		}
 
@@ -353,7 +353,7 @@ mod imp {
 				}
 			);
 
-			bind_default_mic_volume(&audio);
+			bind_default_mic_volume(audio);
 			audio.connect_default_microphone_notify(bind_default_mic_volume);
 		}
 	}

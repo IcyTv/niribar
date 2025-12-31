@@ -1,10 +1,10 @@
+mod weather;
+
 use std::cell::RefCell;
 
 use astal_io::Time;
 use astal_io::prelude::*;
-use astal_mpris::prelude::PlayerExt;
-use astal_mpris::{Loop, Player, Shuffle};
-use glib::{Properties, clone};
+use glib::{DateTime, Properties, clone};
 use gtk4::CompositeTemplate;
 use gtk4::prelude::*;
 use gtk4::subclass::prelude::*;
@@ -19,14 +19,15 @@ glib::wrapper! {
 
 impl ClockPopup {
 	pub fn new(time: &Time) -> Self {
-		glib::Object::builder().property("timer", time).build()
+		glib::Object::builder()
+			.property("timer", time)
+			.property("backwards", Icon::ChevronLeft.name())
+			.property("forwards", Icon::ChevronRight.name())
+			.build()
 	}
 }
 
 mod imp {
-
-	use glib::DateTime;
-
 	use super::*;
 
 	#[derive(Default, Properties, CompositeTemplate)]
@@ -36,17 +37,28 @@ mod imp {
 		#[property(get, set)]
 		current_time: RefCell<String>,
 		#[property(get, construct_only)]
-		timer: RefCell<Time>,
+		timer:        RefCell<Time>,
+
+		// Icons
+		#[property(get, set)]
+		backwards: RefCell<String>,
+		#[property(get, set)]
+		forwards:  RefCell<String>,
+
+		#[template_child]
+		weather_box: TemplateChild<gtk4::Box>,
 	}
 
 	#[glib::object_subclass]
 	impl ObjectSubclass for ClockPopup {
 		type ParentType = gtk4::Popover;
 		type Type = super::ClockPopup;
+
 		const NAME: &'static str = "ClockPopup";
 
 		fn class_init(klass: &mut Self::Class) {
 			klass.bind_template();
+			klass.bind_template_callbacks();
 		}
 
 		fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
@@ -66,15 +78,23 @@ mod imp {
 				#[weak]
 				obj,
 				move |_| {
-					let Ok(time) = DateTime::now_local() else { return };
-					let Ok(formatted) = time.format("%T") else { return };
-
-					obj.set_current_time(formatted);
+					if let Ok(time) = DateTime::now_local() {
+						let formatted = time.format("%T").unwrap_or_else(|_| "00:00:00".into());
+						obj.set_current_time(formatted);
+					} else {
+						obj.set_current_time("00:00:00");
+					}
 				}
 			));
+
+			let weather_display = weather::WeatherDisplay::new();
+			self.weather_box.append(&weather_display);
 		}
 	}
 
 	impl WidgetImpl for ClockPopup {}
 	impl PopoverImpl for ClockPopup {}
+
+	#[gtk4::template_callbacks]
+	impl ClockPopup {}
 }

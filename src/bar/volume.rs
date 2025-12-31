@@ -1,7 +1,7 @@
 use std::cell::RefCell;
 use std::rc::Rc;
 
-use astal_wp::{Audio, DeviceType, Wp};
+use astal_wp::{Audio, Wp};
 use glib::clone;
 use glib::object::ObjectExt;
 use gtk4::prelude::*;

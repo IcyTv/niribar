@@ -1,11 +1,11 @@
 use std::cell::RefCell;
 
 use astal_wp::prelude::*;
-use astal_wp::{Device, Direction, Endpoint};
+use astal_wp::{Direction, Endpoint};
 use glib::{GString, Properties};
+use gtk4::CompositeTemplate;
 use gtk4::prelude::*;
 use gtk4::subclass::prelude::*;
-use gtk4::{ClosureExpression, CompositeTemplate, PropertyExpression};
 
 use crate::icons::Icon;
 

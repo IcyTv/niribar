@@ -1331,6 +1331,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "gweather-sys"
+version = "4.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9cffbe67680461903bbc83915f28d957975998f7a2943db01752e08679fcd081"
+dependencies = [
+ "gio-sys",
+ "glib-sys",
+ "gobject-sys",
+ "libc",
+ "system-deps",
+]
+
+[[package]]
 name = "half"
 version = "2.7.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1508,6 +1521,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "37c93d8daa9d8a012fd8ab92f088405fb202ea0b6ab73ee2482ae66af4f42091"
 
 [[package]]
+name = "libgweather"
+version = "4.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "666424a45de09ec2ed8c2964704fe4f56555299a6ed930db9df5a5d847fec99e"
+dependencies = [
+ "gio",
+ "glib",
+ "gweather-sys",
+ "libc",
+]
+
+[[package]]
 name = "libloading"
 version = "0.8.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1650,6 +1675,7 @@ dependencies = [
  "gtk4",
  "heck",
  "lazy-regex",
+ "libgweather",
  "libnm-api",
  "niri-ipc",
  "rand",

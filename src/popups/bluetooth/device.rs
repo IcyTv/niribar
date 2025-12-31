@@ -24,12 +24,14 @@ impl BluetoothDevice {
 mod imp {
 	use std::ffi::c_void;
 
-	use super::*;
-
 	use astal_bluetooth::prelude::DeviceExt;
 	use async_channel::Sender;
-	use glib::{ffi::GError, gobject_ffi::GObject, translate::ToGlibPtr};
+	use glib::ffi::GError;
+	use glib::gobject_ffi::GObject;
+	use glib::translate::ToGlibPtr;
 	use gtk4::gio::ffi::{GAsyncReadyCallback, GAsyncResult};
+
+	use super::*;
 
 	#[derive(Default, Properties, CompositeTemplate)]
 	#[template(file = "./src/popups/bluetooth/device.blp")]
@@ -178,7 +180,7 @@ mod imp {
 	}
 
 	struct ContextData {
-		tx: Sender<ConnectionResult>,
+		tx:     Sender<ConnectionResult>,
 		finish:
 			unsafe extern "C" fn(*mut astal_bluetooth_sys::AstalBluetoothDevice, *mut GAsyncResult, *mut *mut GError),
 	}
@@ -217,7 +219,7 @@ mod imp {
 
 			match rx.recv().await {
 				Ok(ConnectionResult::Success) => Ok(()),
-				Ok(ConnectionResult::Error(msg)) => Err(Box::new(std::io::Error::new(std::io::ErrorKind::Other, msg))),
+				Ok(ConnectionResult::Error(msg)) => Err(Box::new(std::io::Error::other(msg))),
 				Err(e) => Err(Box::new(e)),
 			}
 		}
@@ -249,7 +251,7 @@ mod imp {
 
 			match rx.recv().await {
 				Ok(ConnectionResult::Success) => Ok(()),
-				Ok(ConnectionResult::Error(msg)) => Err(Box::new(std::io::Error::new(std::io::ErrorKind::Other, msg))),
+				Ok(ConnectionResult::Error(msg)) => Err(Box::new(std::io::Error::other(msg))),
 				Err(e) => Err(Box::new(e)),
 			}
 		}

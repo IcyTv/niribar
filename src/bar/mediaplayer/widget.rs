@@ -189,7 +189,7 @@ fn player_to_key(player: &Player) -> usize {
 	) {
 		(_, "", _) | (_, _, false) => return usize::MAX,
 		(bn, ..) if bn.ends_with("spotify") => 100,
-		(bn, ..) if regex!(r#"^org.mpris.MediaPlayer2.firefox.instance_.*$"#).is_match(&bn) => 200,
+		(bn, ..) if regex!(r#"^org.mpris.MediaPlayer2.firefox.instance_.*$"#).is_match(bn) => 200,
 		_ => usize::MAX - 1000,
 	};
 

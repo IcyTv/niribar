@@ -8,12 +8,10 @@ use async_channel::Sender;
 use futures::{Stream, StreamExt};
 use glib::clone;
 use glib::object::Cast;
-use glib::translate::IntoGlib;
 use gtk4::prelude::*;
 use gtk4::{gdk, gio};
 
 use crate::bar::taskbar::widgets::{NiriWindowWidget, NiriWorkspaceWidget};
-use crate::icons;
 
 pub struct Taskbar {
 	widget: gtk4::ListView,
@@ -80,7 +78,7 @@ impl Taskbar {
 										let widget = NiriWindowWidget::from_window(
 											window.workspace_idx(),
 											window.workspace_id(),
-											&window,
+											window,
 										);
 										store.append(&widget);
 										entry.insert(widget)
@@ -97,10 +95,10 @@ impl Taskbar {
 							}
 
 							for id in omitted {
-								if let Some(button) = window_widgets.remove(&id) {
-									if let Some(index) = store.find(&button) {
-										store.remove(index);
-									}
+								if let Some(button) = window_widgets.remove(&id)
+									&& let Some(index) = store.find(&button)
+								{
+									store.remove(index);
 								}
 							}
 						}
@@ -119,7 +117,7 @@ impl Taskbar {
 	async fn build_output_filter(niri: niri::Niri, monitor: &gtk4::gdk::Monitor) -> Box<dyn Fn(&niri::Window) -> bool> {
 		let outputs = match gio::spawn_blocking(move || niri.outputs()).await {
 			Ok(outputs) => outputs,
-			Err(e) => {
+			Err(_e) => {
 				eprintln!("Failed to get outputs from Niri");
 				return Box::new(|_| true);
 			}
@@ -132,13 +130,13 @@ impl Taskbar {
 		for (name, output) in outputs {
 			if monitor
 				.connector()
-				.map_or(false, |connector| connector.as_str() == name.as_str())
+				.is_some_and(|connector| connector.as_str() == name.as_str())
 			{
 				return Box::new(move |window: &niri::Window| {
 					window
 						.output()
 						.as_ref()
-						.map_or(false, |win_output| win_output == &output.name)
+						.is_some_and(|win_output| win_output == &output.name)
 				});
 			}
 		}
@@ -213,11 +211,11 @@ fn create_workspace_index_factory() -> gtk4::SignalListItemFactory {
 	});
 
 	factory.connect_unbind(|_, item| {
-		if let Some(header) = item.downcast_ref::<gtk4::ListHeader>() {
-			if let Some(workspace_widget) = header.child().and_then(|c| c.downcast::<NiriWorkspaceWidget>().ok()) {
-				workspace_widget.set_workspace_id(0);
-				workspace_widget.set_workspace_index(0);
-			}
+		if let Some(header) = item.downcast_ref::<gtk4::ListHeader>()
+			&& let Some(workspace_widget) = header.child().and_then(|c| c.downcast::<NiriWorkspaceWidget>().ok())
+		{
+			workspace_widget.set_workspace_id(0);
+			workspace_widget.set_workspace_index(0);
 		}
 	});
 

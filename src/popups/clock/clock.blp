@@ -25,22 +25,10 @@ template $ClockPopup: Gtk.Popover {
         "clock-item",
       ]
 
-      Gtk.CenterBox {
-        hexpand: true;
-
-        styles [
-          "calendar-header",
-        ]
-
-        [start]
-        Gtk.Box {}
-
-        [end]
-        Gtk.Box {}
-      }
+      Gtk.Calendar calendar {}
     }
 
-    Gtk.Box {
+    Gtk.Box weather_box {
       styles [
         "weather-box",
         "clock-item",

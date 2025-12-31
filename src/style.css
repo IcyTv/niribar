@@ -1,3 +1,10 @@
+.bar {
+	background-color: transparent;
+	color: @window_fg_color;
+	padding: 2px 12px;
+	transition: background-color 0.3s, color 0.3s;
+}
+
 .media-player {
 	background-color: @window_bg_color;
 	color: @window_fg_color;
@@ -32,7 +39,8 @@
 .niri-window {
 	min-width: 24px;
 	min-height: 24px;
-	
+	padding: 0;
+	margin: 0;
 }
 
 .niri-window.focused {
@@ -332,4 +340,60 @@ scale.media-player-seekbar > trough {
 	color: @purple_1;
 	
 	padding: 20px;
+}
+
+.calendar-box calendar {
+	border: none;
+}
+
+.calendar-box header {
+	border: none;
+}
+
+.calendar-box calendar .month,
+.calendar-box calendar .year {
+	color: @green_1;
+}
+
+.calendar-box calendar .day-name {
+	color: @purple_1;
+	font-weight: bold;
+}
+
+.calendar-box calendar label:selected {
+	background-color: transparent;
+	border: none;
+	outline: none;
+	border-bottom: 2px solid @purple_1;
+	font-weight: bold;
+	border-radius: 0;
+	color: @window_fg_color;
+}
+
+.calendar-box calendar label.today {
+	color: @purple_1;
+	border-radius: 0;
+}
+
+.weather-box .weather-icon {
+	color: @purple_1;
+	margin-right: 12px;
+}
+
+.weather-box .temperature-label {
+	font-weight: bold;
+	font-size: 2rem;
+}
+
+.weather-box .temperature-icon {
+	color: @orange_1;
+}
+
+.weather-box .conditions-label {
+	color: @green_1;
+	font-size: 1.2rem;
+}
+
+.weather-box .weather-icon-small {
+	color: @purple_1;
 }

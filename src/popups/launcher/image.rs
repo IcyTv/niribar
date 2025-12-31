@@ -29,7 +29,7 @@ impl LauncherImage {
 			.map(|name| name[..(name.len() - 4)].to_string())
 			.collect();
 
-		Self::new(&gif_files.choose(&mut rand::rng()).expect("No gifs found"))
+		Self::new(gif_files.choose(&mut rand::rng()).expect("No gifs found"))
 	}
 }
 
@@ -37,7 +37,7 @@ impl LauncherImage {
 #[properties(wrapper_type = LauncherImage)]
 pub struct LauncherImagePrivate {
 	#[property(get, set)]
-	image: RefCell<String>,
+	image:     RefCell<String>,
 	anim_task: RefCell<Option<glib::JoinHandle<()>>>,
 }
 
@@ -107,10 +107,10 @@ impl ObjectImpl for LauncherImagePrivate {
 							}
 						};
 
-						if let Some(0) = frame.details().n_frame() {
-							if !frames.is_empty() {
-								break;
-							}
+						if let Some(0) = frame.details().n_frame()
+							&& !frames.is_empty()
+						{
+							break;
 						}
 
 						frames.push((frame.texture(), frame.delay().unwrap_or(Duration::from_millis(100))));

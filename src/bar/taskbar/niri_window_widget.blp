@@ -1,0 +1,22 @@
+using Gtk 4.0;
+
+template $NiriWindowWidget: Gtk.Button {
+  halign: center;
+  valign: center;
+  vexpand: false;
+  hexpand: false;
+  width-request: 24;
+  height-request: 24;
+
+  styles [
+    "niri-window",
+  ]
+
+  child: Gtk.Image {
+    pixel-size: 24;
+    halign: center;
+    valign: center;
+
+    gicon: bind template.icon;
+  };
+}

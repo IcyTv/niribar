@@ -256,13 +256,13 @@ impl NiriState {
 		self.windows
 			.values()
 			.filter_map(|window| {
-				if let Some(ws_id) = window.workspace_id {
-					if let Some(workspace) = self.workspaces.get(&ws_id) {
-						return Some(Window {
-							window:    window.clone(),
-							workspace: workspace.clone(),
-						});
-					}
+				if let Some(ws_id) = window.workspace_id
+					&& let Some(workspace) = self.workspaces.get(&ws_id)
+				{
+					return Some(Window {
+						window:    window.clone(),
+						workspace: workspace.clone(),
+					});
 				}
 
 				None

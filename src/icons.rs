@@ -1,4 +1,3 @@
-use const_format::{Case, concatcp, map_ascii_case};
 use gtk4::gio;
 
 pub fn register_bundled_icons() {

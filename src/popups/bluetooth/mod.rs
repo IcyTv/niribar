@@ -1,16 +1,13 @@
 mod device;
 
 use std::cell::RefCell;
-use std::rc::Rc;
 
 use astal_bluetooth::Bluetooth;
 use glib::{Properties, clone};
-use gtk4::gio::{ListModel, ListStore};
+use gtk4::gio::ListStore;
 use gtk4::prelude::*;
 use gtk4::subclass::prelude::*;
-use gtk4::{CompositeTemplate, ListItemFactory, SignalListItemFactory};
-
-use crate::icons::Icon;
+use gtk4::{CompositeTemplate, SignalListItemFactory};
 
 glib::wrapper! {
 	pub struct BluetoothPopup(ObjectSubclass<imp::BluetoothPopup>)
@@ -34,8 +31,8 @@ mod imp {
 	#[derive(Default, Clone, Copy)]
 	struct AdapterState {
 		discoverable: bool,
-		pairable: bool,
-		discovering: bool,
+		pairable:     bool,
+		discovering:  bool,
 	}
 
 	#[derive(Default, Properties, CompositeTemplate)]
@@ -43,7 +40,7 @@ mod imp {
 	#[properties(wrapper_type = super::BluetoothPopup)]
 	pub struct BluetoothPopup {
 		#[template_child]
-		list_view: TemplateChild<gtk4::ListView>,
+		list_view:      TemplateChild<gtk4::ListView>,
 		previous_state: RefCell<Option<AdapterState>>,
 	}
 
@@ -75,7 +72,7 @@ mod imp {
 			let model = ListStore::builder().build();
 			let factory = SignalListItemFactory::new();
 
-			factory.connect_setup(move |_, item| {});
+			factory.connect_setup(move |_, _item| {});
 			factory.connect_bind(move |_, item| {
 				let list_item = item
 					.downcast_ref::<gtk4::ListItem>()
@@ -108,7 +105,7 @@ mod imp {
 				#[weak]
 				model,
 				move |_bt, device| {
-					let item = device::BluetoothDevice::new(&device);
+					let item = device::BluetoothDevice::new(device);
 					model.append(&item);
 				}
 			));
@@ -149,8 +146,8 @@ mod imp {
 								// Store previous state
 								let state = AdapterState {
 									discoverable: adapter.is_discoverable(),
-									pairable: adapter.is_pairable(),
-									discovering: adapter.is_discovering(),
+									pairable:     adapter.is_pairable(),
+									discovering:  adapter.is_discovering(),
 								};
 								*imp.previous_state.borrow_mut() = Some(state);
 

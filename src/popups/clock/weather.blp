@@ -1,0 +1,147 @@
+using Gtk 4.0;
+using GWeather 4.0;
+
+template $WeatherDisplay: Gtk.Box {
+  orientation: vertical;
+
+  weather-info: GWeather.Info {
+    application-id: "de.icytv.niribar";
+    contact-info: "michael.finger@icytv.de";
+  };
+
+  styles [
+    "weather-box",
+    "clock-item",
+  ]
+
+  Gtk.Box {
+    orientation: horizontal;
+    spacing: 6;
+
+    Gtk.Image {
+      pixel-size: 48;
+      vexpand: true;
+      valign: center;
+
+      styles [
+        "weather-icon",
+      ]
+
+      icon-name: bind $convert_icon(template.weather-icon as <string>) as <string>;
+    }
+
+    Gtk.Box {
+      orientation: vertical;
+      hexpand: true;
+      halign: start;
+
+      Gtk.Box {
+        orientation: horizontal;
+
+        Gtk.Label {
+          styles [
+            "temperature-label",
+          ]
+
+          xalign: 1.0;
+          label: bind template.temperature;
+        }
+
+        Gtk.Image {
+          pixel-size: 28;
+
+          styles [
+            "temperature-icon",
+          ]
+
+          icon-name: bind template.temperature-icon;
+        }
+      }
+
+      Gtk.Label {
+        xalign: 0.0;
+
+        styles [
+          "conditions-label",
+        ]
+
+        label: bind template.conditions;
+      }
+    }
+
+    Gtk.Box {
+      orientation: vertical;
+
+      Gtk.Box {
+        orientation: horizontal;
+        spacing: 4;
+
+        Gtk.Image {
+          styles [
+            "weather-icon-small",
+          ]
+
+          icon-name: bind template.weather-wind-icon;
+        }
+
+        Gtk.Label {
+          styles [
+            "wind-speed-label",
+          ]
+
+          label: bind template.wind-speed;
+        }
+      }
+
+      Gtk.Box {
+        orientation: horizontal;
+        spacing: 4;
+
+        Gtk.Image {
+          styles [
+            "weather-icon-small",
+          ]
+
+          icon-name: bind template.weather-humidity-icon;
+        }
+
+        Gtk.Label {
+          styles [
+            "humidity-label",
+          ]
+
+          label: bind template.humidity;
+        }
+      }
+
+      Gtk.Box {
+        orientation: horizontal;
+        spacing: 4;
+
+        Gtk.Image {
+          styles [
+            "weather-icon-small",
+          ]
+
+          icon-name: bind template.temperature-icon;
+        }
+
+        Gtk.Label {
+          styles [
+            "apparent-temperature-label",
+          ]
+
+          label: bind template.apparent-temperature;
+        }
+      }
+    }
+  }
+
+  Gtk.Box {
+    orientation: horizontal;
+
+    styles [
+      "weather-forecast-box",
+    ]
+  }
+}

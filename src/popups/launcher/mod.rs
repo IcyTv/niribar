@@ -131,7 +131,7 @@ mod imp {
 			}
 
 			let gif_image = image::LauncherImage::random();
-			(&*self.gif_box).append(&gif_image);
+			(*self.gif_box).append(&gif_image);
 
 			for (icon, class_name, on_click) in POWER {
 				let button = gtk4::Button::builder()
@@ -250,7 +250,7 @@ fn focus_or_launch(name: &str) {
 		for window in windows {
 			if let Some(app_id) = &window.app_id {
 				println!("Window app ID: {}", app_id);
-				if app_ids.contains(&app_id) {
+				if app_ids.contains(app_id) {
 					let _ = socket.send(Request::Action(Action::FocusWindow { id: window.id }));
 					return;
 				}

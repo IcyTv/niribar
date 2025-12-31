@@ -1,6 +1,5 @@
-use glib::{Bytes, clone};
+use glib::clone;
 use gtk4::Image;
-use gtk4::gdk::Texture;
 use gtk4::prelude::*;
 
 use crate::icons;
@@ -13,7 +12,7 @@ pub struct Overview {
 }
 
 impl Overview {
-	pub fn new(args: &crate::Args) -> Self {
+	pub fn new(_args: &crate::Args) -> Self {
 		let image = Image::from_icon_name(icons::Icon::Nixos.name());
 		image.set_pixel_size(24);
 

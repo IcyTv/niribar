@@ -45,6 +45,30 @@ const LUCIDE_ICONS: &[&str] = &[
 	"repeat",
 	"headphones",
 	"headset",
+	"chevron-left",
+	"chevron-right",
+	"cloud",
+	"cloud-drizzle",
+	"cloud-fog",
+	"cloud-hail",
+	"cloud-lightning",
+	"cloud-moon",
+	"cloud-moon-rain",
+	"cloud-rain",
+	"cloud-rain-wind",
+	"cloud-snow",
+	"cloud-sun",
+	"cloud-sun-rain",
+	"cloud-alert",
+	"cloudy",
+	"snowflake",
+	"sun",
+	"sun-snow",
+	"wind",
+	"haze",
+	"moon-star",
+	"thermometer",
+	"droplets",
 ];
 
 const BRAND_ICONS: &[&str] = &["discord", "spotify", "firefox", "nixos"];
@@ -57,7 +81,7 @@ fn main() {
 	let dest_path = Path::new(&out_dir);
 
 	if !dest_path.exists() {
-		let _ = std::fs::create_dir_all(&dest_path).ok();
+		let _ = std::fs::create_dir_all(dest_path).ok();
 	}
 
 	let mut xml = String::from(

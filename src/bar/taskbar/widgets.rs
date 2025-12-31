@@ -1,13 +1,14 @@
 use std::cell::RefCell;
 
 use glib::Properties;
+use gtk4::CompositeTemplate;
 use gtk4::gio::prelude::AppInfoExt;
 use gtk4::gio::{self};
 use gtk4::prelude::*;
 use gtk4::subclass::prelude::*;
 use niri_ipc::Window as NiriWindow;
 
-use crate::icons::{self, Icon};
+use crate::icons;
 
 glib::wrapper! {
 	pub struct NiriWindowWidget(ObjectSubclass<niri_window_imp::NiriWindowWidget>)
@@ -50,21 +51,22 @@ impl NiriWindowWidget {
 mod niri_window_imp {
 	use super::*;
 
-	#[derive(Properties, Default)]
+	#[derive(Properties, Default, CompositeTemplate)]
+	#[template(file = "src/bar/taskbar/niri_window_widget.blp")]
 	#[properties(wrapper_type = super::NiriWindowWidget)]
 	pub struct NiriWindowWidget {
 		#[property(get, construct_only)]
-		window_id:       RefCell<u64>,
+		window_id: RefCell<u64>,
 		#[property(get, set)]
-		pub icon:        RefCell<Option<gio::Icon>>,
+		pub icon: RefCell<Option<gio::Icon>>,
 		#[property(get, construct_only)]
-		sort_key:        RefCell<u64>,
+		sort_key: RefCell<u64>,
 		#[property(get, set)]
-		title:           RefCell<String>,
+		title: RefCell<String>,
 		#[property(get, set)]
 		workspace_index: RefCell<u8>,
 		#[property(get, set)]
-		workspace_id:    RefCell<u64>,
+		workspace_id: RefCell<u64>,
 	}
 
 	#[glib::object_subclass]
@@ -73,21 +75,20 @@ mod niri_window_imp {
 		type Type = super::NiriWindowWidget;
 
 		const NAME: &'static str = "NiriWindowWidget";
+
+		fn class_init(klass: &mut Self::Class) {
+			klass.bind_template();
+		}
+
+		fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
+			obj.init_template();
+		}
 	}
 
 	#[glib::derived_properties]
 	impl ObjectImpl for NiriWindowWidget {
 		fn constructed(&self) {
 			self.parent_constructed();
-
-			let obj = self.obj();
-			obj.set_css_classes(&["niri-window"]);
-
-			let image = gtk4::Image::new();
-			image.set_pixel_size(24);
-			obj.set_child(Some(&image));
-
-			obj.bind_property("icon", &image, "gicon").sync_create().build();
 		}
 	}
 
@@ -127,9 +128,9 @@ mod niri_workspace_imp {
 	#[properties(wrapper_type = super::NiriWorkspaceWidget)]
 	pub struct NiriWorkspaceWidget {
 		#[property(get, set)]
-		pub icon:        RefCell<Option<String>>,
+		pub icon: RefCell<Option<String>>,
 		#[property(get, set)]
-		workspace_id:    RefCell<u64>,
+		workspace_id: RefCell<u64>,
 		#[property(get, set)]
 		workspace_index: RefCell<u8>,
 	}

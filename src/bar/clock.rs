@@ -8,8 +8,8 @@ use crate::icons;
 use crate::popups::clock::ClockPopup;
 
 pub struct Clock {
-	container: gtk4::Widget,
-	timer: Time,
+	container:      gtk4::Widget,
+	timer:          Time,
 	signal_handler: Option<SignalHandlerId>,
 }
 

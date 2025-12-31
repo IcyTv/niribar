@@ -69,7 +69,7 @@ impl Bar {
 			.name("bar")
 			.css_classes(["bar"])
 			.monitor(monitor_index)
-			.width_request(monitor_width as i32)
+			.width_request(monitor_width)
 			.build();
 
 		Self {

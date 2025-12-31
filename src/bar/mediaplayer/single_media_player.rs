@@ -106,7 +106,7 @@ mod imp {
 			self.switcher_button_stack.add_controller(hover_controller);
 
 			let widget = obj.upcast_ref::<gtk4::Widget>();
-			let popup = MediaPlayerPopup::new(&*self.player.borrow());
+			let popup = MediaPlayerPopup::new(&self.player.borrow());
 			popup.set_parent(widget);
 			popup.set_autohide(false);
 
@@ -255,7 +255,7 @@ mod imp {
 fn player_icon_name(player: &Player) -> &'static str {
 	match player.bus_name().as_str() {
 		bn if bn.ends_with("spotify") => crate::icons::Icon::Spotify.name(),
-		bn if regex!(r#"^org.mpris.MediaPlayer2.firefox.instance_.*$"#).is_match(&bn) => {
+		bn if regex!(r#"^org.mpris.MediaPlayer2.firefox.instance_.*$"#).is_match(bn) => {
 			crate::icons::Icon::Firefox.name()
 		}
 		_ => "audio-x-generic",
